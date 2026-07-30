@@ -1,11 +1,13 @@
 import csv
 
-from batch_clubs.models import Club, Player
-from batch_clubs.writer import write_clubs_csv, write_players_csv
+from batch_clubs.adapters.csv_sink import CsvClubSink
+from batch_clubs.domain.models import Club, Player
 
 
 def test_write_clubs_csv_usa_cabecalho_correspondente_a_especificacao(tmp_path):
     filepath = tmp_path / "clubs.csv"
+    players_filepath = tmp_path / "players.csv"
+    sink = CsvClubSink(str(filepath), str(players_filepath))
     club = Club(
         club_id="SCCP",
         name="Corinthians",
@@ -22,7 +24,7 @@ def test_write_clubs_csv_usa_cabecalho_correspondente_a_especificacao(tmp_path):
         players=[],
     )
 
-    write_clubs_csv(str(filepath), [club])
+    sink.write_clubs([club])
 
     with open(filepath, "r", encoding="utf-8", newline="") as handle:
         rows = list(csv.reader(handle))
@@ -44,7 +46,9 @@ def test_write_clubs_csv_usa_cabecalho_correspondente_a_especificacao(tmp_path):
 
 
 def test_write_players_csv_usa_cabecalho_correspondente_a_especificacao(tmp_path):
+    clubs_filepath = tmp_path / "clubs.csv"
     filepath = tmp_path / "players.csv"
+    sink = CsvClubSink(str(clubs_filepath), str(filepath))
     player = Player(
         player_id="SCCP-10",
         name="Yuri Alberto",
@@ -58,7 +62,7 @@ def test_write_players_csv_usa_cabecalho_correspondente_a_especificacao(tmp_path
         club_id="SCCP",
     )
 
-    write_players_csv(str(filepath), [player])
+    sink.write_players([player])
 
     with open(filepath, "r", encoding="utf-8", newline="") as handle:
         rows = list(csv.reader(handle))

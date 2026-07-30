@@ -1,7 +1,7 @@
 import pytest
 
-from batch_clubs.models import Club
-from batch_clubs.club_parser import parse_club
+from batch_clubs.domain.models import Club
+from batch_clubs.domain.club_parser import parse_club
 
 
 @pytest.fixture

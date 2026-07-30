@@ -1,11 +1,13 @@
 import csv
 
-from batch_clubs.models import Club
-from batch_clubs.writer import write_clubs_csv
+from batch_clubs.adapters.csv_sink import CsvClubSink
+from batch_clubs.domain.models import Club
 
 
 def test_write_clubs_csv_escreve_2_clubes_com_cabecalho(tmp_path):
     filepath = tmp_path / "clubs.csv"
+    players_filepath = tmp_path / "players.csv"
+    sink = CsvClubSink(str(filepath), str(players_filepath))
     clubs = [
         Club(
             club_id="SCCP",
@@ -39,7 +41,7 @@ def test_write_clubs_csv_escreve_2_clubes_com_cabecalho(tmp_path):
         ),
     ]
 
-    write_clubs_csv(str(filepath), clubs)
+    sink.write_clubs(clubs)
 
     with open(filepath, "r", encoding="utf-8", newline="") as handle:
         rows = list(csv.reader(handle))
@@ -55,6 +57,8 @@ def test_write_clubs_csv_escreve_2_clubes_com_cabecalho(tmp_path):
 
 def test_write_clubs_csv_escapa_campo_com_virgula_usando_aspas(tmp_path):
     filepath = tmp_path / "clubs.csv"
+    players_filepath = tmp_path / "players.csv"
+    sink = CsvClubSink(str(filepath), str(players_filepath))
     club = Club(
         club_id="SCCP",
         name="Corinthians, Paulista",
@@ -71,7 +75,7 @@ def test_write_clubs_csv_escapa_campo_com_virgula_usando_aspas(tmp_path):
         players=[],
     )
 
-    write_clubs_csv(str(filepath), [club])
+    sink.write_clubs([club])
 
     with open(filepath, "r", encoding="utf-8", newline="") as handle:
         content = handle.read()

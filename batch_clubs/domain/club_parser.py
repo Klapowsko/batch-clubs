@@ -1,6 +1,5 @@
-from .date_utils import parse_date
-from .formatting import join_colors
 from .models import Club, Player
+from .rules import join_colors, parse_date
 
 
 VALID_CHAMPIONSHIPS = {"SERIE A", "SERIE B"}

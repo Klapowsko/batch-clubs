@@ -1,7 +1,7 @@
 import pytest
 
-from batch_clubs.models import Player
-from batch_clubs.club_parser import parse_players
+from batch_clubs.domain.models import Player
+from batch_clubs.domain.club_parser import parse_players
 
 
 def test_parse_players_retorna_lista_de_jogadores_validos():

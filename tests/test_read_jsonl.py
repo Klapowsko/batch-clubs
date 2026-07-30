@@ -1,6 +1,6 @@
 import json
 
-from batch_clubs.reader import read_jsonl
+from batch_clubs.adapters.jsonl_source import JsonlClubSource
 
 
 def test_read_jsonl_pula_linhas_json_invalidas_e_retornas_dicionarios_validos(tmp_path):
@@ -12,7 +12,8 @@ def test_read_jsonl_pula_linhas_json_invalidas_e_retornas_dicionarios_validos(tm
         encoding="utf-8",
     )
 
-    result = list(read_jsonl(str(filepath)))
+    source = JsonlClubSource(str(filepath))
+    result = list(source.read())
 
     assert result == [
         {"club_id": "SCCP", "name": "Corinthians"},

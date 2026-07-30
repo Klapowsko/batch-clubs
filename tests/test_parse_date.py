@@ -1,6 +1,6 @@
 import pytest
 
-from batch_clubs.date_utils import parse_date
+from batch_clubs.domain.rules import parse_date
 
 
 @pytest.mark.parametrize(
