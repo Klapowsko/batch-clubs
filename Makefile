@@ -1,7 +1,7 @@
 PYTHON_IMAGE ?= python:3.12-slim
 TEST_FILE ?= tests
 
-.PHONY: install test test-shell test-file
+.PHONY: install test test-shell test-file run
 
 install:
 	@docker pull $(PYTHON_IMAGE)
@@ -11,5 +11,8 @@ test:
 
 test-file:
 	@docker run --rm -v $(PWD):/app -w /app $(PYTHON_IMAGE) sh -lc "pip install --no-cache-dir -r requirements.txt && PYTHONPATH=/app pytest -q $(TEST_FILE)"
+
+run:
+	@docker run --rm -v $(PWD):/app -w /app $(PYTHON_IMAGE) sh -lc "pip install --no-cache-dir -r requirements.txt && PYTHONPATH=/app python -m batch_clubs"
 
 
