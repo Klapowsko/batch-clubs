@@ -13,6 +13,6 @@ test-file:
 	@docker run --rm -v $(PWD):/app -w /app $(PYTHON_IMAGE) sh -lc "pip install --no-cache-dir -r requirements.txt && PYTHONPATH=/app pytest -q $(TEST_FILE)"
 
 run:
-	@docker run --rm -v $(PWD):/app -w /app $(PYTHON_IMAGE) sh -lc "pip install --no-cache-dir -r requirements.txt && PYTHONPATH=/app python -m batch_clubs"
+	@docker run --rm -v $(PWD):/app -w /app $(PYTHON_IMAGE) sh -lc "pip install --no-cache-dir -r requirements.txt && PYTHONPATH=/app python -m batch_clubs $(if $(INPUT_FILE),$(INPUT_FILE),testdata/sample_clubes.jsonl)"
 
 

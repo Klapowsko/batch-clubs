@@ -5,30 +5,28 @@ from .models import Club, Player
 
 
 CLUB_COLUMNS = [
-    "club_id",
-    "name",
-    "championship",
-    "founding_date",
-    "city",
-    "state",
-    "country",
-    "stadium",
-    "president",
-    "nickname",
-    "colors",
-    "titles",
-    "players",
+    "Id do Clube",
+    "Nome",
+    "Campeonato",
+    "Data de Fundação",
+    "Cidade",
+    "Estado",
+    "País",
+    "Estádio",
+    "Presidente",
+    "Apelido",
+    "Cores",
 ]
 
 PLAYER_COLUMNS = [
-    "club_id",
-    "player_id",
-    "name",
-    "age",
-    "goals",
-    "debut_date",
-    "position",
-    "shirt_number",
+    "Id do Clube",
+    "Id do Jogador",
+    "Nome",
+    "Idade",
+    "Gols",
+    "Data de Estreia",
+    "Posição",
+    "Número da Camisa",
 ]
 
 
@@ -49,8 +47,6 @@ def write_clubs_csv(filepath: str, clubs: list[Club]) -> None:
                 getattr(club, "president", ""),
                 getattr(club, "nickname", "") or "",
                 "|".join(getattr(club, "colors", []) or []),
-                getattr(club, "titles", "") if getattr(club, "titles", "") is not None else "",
-                len(getattr(club, "players", []) or []),
             ])
 
 

@@ -1,0 +1,1 @@
+"""Pacote batch_clubs."""
