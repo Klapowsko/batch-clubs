@@ -1,6 +1,6 @@
 import json
 
-from batch_clubs.jsonl_reader import read_jsonl
+from batch_clubs.reader import read_jsonl
 
 
 def test_read_jsonl_pula_linhas_json_invalidas_e_retornas_dicionarios_validos(tmp_path):

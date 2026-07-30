@@ -1,7 +1,7 @@
 import csv
 
 from batch_clubs.models import Club
-from batch_clubs.csv_writer import write_clubs_csv
+from batch_clubs.writer import write_clubs_csv
 
 
 def test_write_clubs_csv_escreve_2_clubes_com_cabecalho(tmp_path):
@@ -44,7 +44,11 @@ def test_write_clubs_csv_escreve_2_clubes_com_cabecalho(tmp_path):
     with open(filepath, "r", encoding="utf-8", newline="") as handle:
         rows = list(csv.reader(handle))
 
-    assert rows[0] == ["club_id", "name", "championship", "founding_date", "city", "state", "country", "stadium", "president", "nickname", "colors", "titles", "players"]
+    assert rows[0] == [
+        "Id do Clube", "Nome", "Campeonato", "Data de Fundação",
+        "Cidade", "Estado", "País", "Estádio", "Presidente",
+        "Apelido", "Cores",
+    ]
     assert rows[1][0] == "SCCP"
     assert rows[2][0] == "SEP"
 
