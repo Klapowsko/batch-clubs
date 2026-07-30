@@ -1,10 +1,12 @@
 import argparse
 import sys
 from pathlib import Path
+from typing import Iterator
 
 from batch_clubs.adapters.csv_sink import CsvClubSink
 from batch_clubs.adapters.jsonl_source import JsonlClubSource
 from batch_clubs.domain.club_parser import parse_club, parse_players
+from batch_clubs.domain.models import Club, Player
 from batch_clubs.ports.sink import ClubSink
 from batch_clubs.ports.source import ClubSource
 
@@ -19,6 +21,23 @@ def build_parser() -> argparse.ArgumentParser:
         help="Diretório onde os arquivos CSV serão escritos (padrão: output)",
     )
     return parser
+
+
+def iter_valid_clubs(source: ClubSource) -> Iterator[tuple[Club, list[dict]]]:
+    for raw in source.read():
+        club = parse_club(raw)
+        if club is None:
+            continue
+
+        raw_players = raw.get("players") or []
+        if not isinstance(raw_players, list):
+            raw_players = []
+        yield club, raw_players
+
+
+def iter_players(club_id: str, raw_players: list[dict]) -> Iterator[Player]:
+    for player in parse_players(club_id, raw_players):
+        yield player
 
 
 def main() -> int:
@@ -42,21 +61,8 @@ def main() -> int:
     source: ClubSource = JsonlClubSource(str(input_path))
     sink: ClubSink = CsvClubSink(str(output_dir / "clubs.csv"), str(output_dir / "players.csv"))
 
-    clubs = []
-    players = []
-
-    for raw in source.read():
-        club = parse_club(raw)
-        if club is None:
-            continue
-
-        clubs.append(club)
-        raw_players = raw.get("players") or []
-        if not isinstance(raw_players, list):
-            raw_players = []
-        players.extend(parse_players(club.club_id, raw_players))
-
-    sink.write_clubs(clubs)
-    sink.write_players(players)
+    for club, raw_players in iter_valid_clubs(source):
+        sink.write_clubs(iter([club]))
+        sink.write_players(iter_players(club.club_id, raw_players))
 
     return 0

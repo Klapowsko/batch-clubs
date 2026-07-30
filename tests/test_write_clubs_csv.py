@@ -41,7 +41,7 @@ def test_write_clubs_csv_escreve_2_clubes_com_cabecalho(tmp_path):
         ),
     ]
 
-    sink.write_clubs(clubs)
+    sink.write_clubs(iter(clubs))
 
     with open(filepath, "r", encoding="utf-8", newline="") as handle:
         rows = list(csv.reader(handle))
@@ -75,7 +75,7 @@ def test_write_clubs_csv_escapa_campo_com_virgula_usando_aspas(tmp_path):
         players=[],
     )
 
-    sink.write_clubs([club])
+    sink.write_clubs(iter([club]))
 
     with open(filepath, "r", encoding="utf-8", newline="") as handle:
         content = handle.read()

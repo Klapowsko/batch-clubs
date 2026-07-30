@@ -1,11 +1,11 @@
-from typing import Protocol
+from typing import Iterator, Protocol
 
 from batch_clubs.domain.models import Club, Player
 
 
 class ClubSink(Protocol):
-    def write_clubs(self, clubs: list[Club]) -> None:
+    def write_clubs(self, clubs: Iterator[Club]) -> None:
         ...
 
-    def write_players(self, players: list[Player]) -> None:
+    def write_players(self, players: Iterator[Player]) -> None:
         ...

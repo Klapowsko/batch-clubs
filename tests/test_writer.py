@@ -24,7 +24,7 @@ def test_write_clubs_csv_usa_cabecalho_correspondente_a_especificacao(tmp_path):
         players=[],
     )
 
-    sink.write_clubs([club])
+    sink.write_clubs(iter([club]))
 
     with open(filepath, "r", encoding="utf-8", newline="") as handle:
         rows = list(csv.reader(handle))
@@ -62,7 +62,7 @@ def test_write_players_csv_usa_cabecalho_correspondente_a_especificacao(tmp_path
         club_id="SCCP",
     )
 
-    sink.write_players([player])
+    sink.write_players(iter([player]))
 
     with open(filepath, "r", encoding="utf-8", newline="") as handle:
         rows = list(csv.reader(handle))
