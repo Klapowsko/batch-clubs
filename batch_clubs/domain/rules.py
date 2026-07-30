@@ -25,3 +25,13 @@ def join_colors(colors: list[str] | None) -> str:
     if not colors:
         return ""
     return "|".join(colors)
+
+
+def parse_optional_int(valor) -> int | None:
+    if valor is None:
+        return None
+
+    try:
+        return int(valor)
+    except (TypeError, ValueError):
+        return None

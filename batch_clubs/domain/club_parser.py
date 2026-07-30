@@ -1,5 +1,5 @@
 from .models import Club, Player
-from .rules import join_colors, parse_date
+from .rules import join_colors, parse_date, parse_optional_int
 
 
 VALID_CHAMPIONSHIPS = {"SERIE A", "SERIE B"}
@@ -40,7 +40,7 @@ def parse_club(raw: dict) -> Club | None:
         president=str(raw.get("president") or ""),
         nickname=nickname,
         colors=[str(color) for color in colors],
-        titles=int(raw.get("titles")) if raw.get("titles") is not None else None,
+        titles=parse_optional_int(raw.get("titles")),
         players=players,
     )
 
@@ -67,13 +67,13 @@ def parse_players(club_id: str, raw_players: list[dict]) -> list[Player]:
         player = Player(
             player_id=str(player_id),
             name=str(raw.get("name") or ""),
-            age=int(raw.get("age")) if raw.get("age") is not None else None,
-            goals=int(raw.get("goals")) if raw.get("goals") is not None else None,
+            age=parse_optional_int(raw.get("age")),
+            goals=parse_optional_int(raw.get("goals")),
             debut_date=parse_date(str(raw.get("debut_date") or "")),
             position=str(raw.get("position") or ""),
             shirt_number=shirt_number,
             nationality=str(raw.get("nationality") or ""),
-            market_value=int(raw.get("market_value")) if raw.get("market_value") is not None else None,
+            market_value=parse_optional_int(raw.get("market_value")),
             club_id=str(club_id),
         )
         players.append(player)
